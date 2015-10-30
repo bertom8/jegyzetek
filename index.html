@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Jegyzet</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link href="style/headers.css" rel="stylesheet" type="text/css"/>
+        <link href="style/drawer.css" rel="stylesheet" type="text/css"/>
+        <link href="style/app.css" rel="stylesheet" type="text/css"/>
+        <link href="style/layout.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <div>
+            <section data-type="sidebar">
+                <header>
+                    <h1>Opciók</h1>
+                </header>
+                <nav>
+                    <ul>
+                        <li><a href="About.html">About</a></li>
+                        <li><a href="Torles.html">Törlés</a></li>
+                        <li><a href="Ujjegyzet.html">Új</a></li>
+                        <li><a href="Exit.html">Kilépés</a></li>
+                    </ul>
+                </nav>
+            </section>
+
+            <section id="drawer" role="region">
+                <header>
+                    <a href="#content"><span class="icon icon-menu">hide sidebar</span></a>
+                    <a href="#drawer"><span class="icon icon-menu">show sidebar</span></a>
+                    <h1>Jegyzet</h1>
+                </header>
+                <div role="main">
+                    <section class="gaia-list fit scroll sticky">
+                        <article>
+                            <header>Jegyzetek</header>
+                            <ul id="notes">
+
+                            </ul>
+                        </article>
+
+                        <article>
+                            <header>Adatfelvitel</header>
+                            <ul>
+                                <li><input id="txt" type="text" placeholder="Jegyzetelés" /></li>
+                                <li><button id="action" class="icon-share">Ok</button></li>
+                            </ul>
+                        </article>
+
+                    </section>
+                </div>
+            </section>
+
+
+        </div>
+    </body>
+</html>

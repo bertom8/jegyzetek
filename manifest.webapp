@@ -1,0 +1,14 @@
+{
+  "name": "Jegyzetek",
+  "description": "Jegyzettömb",
+  "launch_path": "/index.html",
+  "icons": {
+    "512": "/img/img_512.png",
+    "128": "/img/img_128.png"
+  },
+  "developer": {
+    "name": "Bereczki Tamás",
+    "url": "http://www.stud.u-szeged.hu/Bereczki.Tamas"
+  },
+  "default_locale": "hu"
+}
