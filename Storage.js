@@ -1,91 +1,110 @@
 //console.log(screen.height);
-document.querySelector("div[role='main']").style.height = "" + (screen.height - 74) + "px";
+document.querySelector("div[role='main']").style.height = "" + (screen.height - 80) + "px";
 
 function addsor (szoveg) {
-  var li = document.createElement("li");
-  li.innerHTML = "" + szoveg;
-  document.getElementById("notes").appendChild(li);
+  var span = document.createElement("ul");
+  span.innerHTML = szoveg;
+  document.getElementById("notes").appendChild(span);
+  //document.getElementById("notes").value = szoveg;
 }
 
-var IDBFactory_db = window.indexedDB;
-var IDBOpenDBRequest_req = IDBFactory_db.open ("Adatbazis_Tar", 1);
+var Factory = window.indexedDB;
+var OpenDB = Factory.open ("JegyzetTar", 1);
 
-IDBOpenDBRequest_req.onupgradeneeded = function (evt) {
+OpenDB.onupgradeneeded = function (evt) {
     var IDBDatabase_db = evt.currentTarget.result;
     
-    var IDBObjectStore_os = IDBDatabase_db.createObjectStore ("Hozzaszolasok", {keyPath: "Id", autoIncrement: true});
+    var IDBObjectStore_os = IDBDatabase_db.createObjectStore ("Jegyzetek", {keyPath: "Id", autoIncrement: true});
     
-    var IDBIndex_idx1 = IDBObjectStore_os.createIndex ("Id", "Id", {unique: true});
+    IDBObjectStore_os.createIndex ("Id", "Id", {unique: true});
     
 };
 
 
-IDBOpenDBRequest_req.onsuccess = function () {
-  var IDBDatabase_db = this.result;
+OpenDB.onsuccess = function () {
+  var Database_db = this.result;
   
-  var IDBTransaction_trans = IDBDatabase_db.transaction ("Hozzaszolasok", "readonly");
+  var Transaction_trans = Database_db.transaction ("Jegyzetek", "readonly");
     
-  IDBTransaction_trans.oncomplete = function () {
-      IDBDatabase_db.close ();
+  Transaction_trans.oncomplete = function () {
+      Database_db.close ();
   };
   
-  var IDBObjectStore_oswt = IDBTransaction_trans.objectStore ("Hozzaszolasok");
+  var ObjectStore_oswt = Transaction_trans.objectStore ("Jegyzetek");
   
-  var IDBRequest_Kreq1 = IDBObjectStore_oswt.openCursor ();
-  IDBRequest_Kreq1.onsuccess = function (evt) {
-    var IDBCursorWithValue_cursor = evt.target.result;
+  var Request_Curzor = ObjectStore_oswt.openCursor ();
+  Request_Curzor.onsuccess = function (evt) {
+    var CursorWithValue_cursor = evt.target.result;
     
-    if (IDBCursorWithValue_cursor) {
-      addsor ("" + IDBCursorWithValue_cursor.value.Id + " Szöveg: " + IDBCursorWithValue_cursor.value.Szoveg);
-      IDBCursorWithValue_cursor.continue ();
+    if (CursorWithValue_cursor) {
+        if (CursorWithValue_cursor.value !== null) {
+            addsor (CursorWithValue_cursor.value.Szoveg + "<br/>");
+        }
+        CursorWithValue_cursor.continue ();
     }
     
     else {
-      console.log ("Végetért a kiírás :-)");
+      console.log ("Végetért a kiírás");
     }
     
   };
   
-  IDBRequest_Kreq1.onerror = function () {
+  Request_Curzor.onerror = function () {
    console.log ("Hiba a kurzor megnyitásakor!");
   };
   
 };
 
-function addTxt() {
-  var IDBFactory_db = window.indexedDB;
+function addNotes() {
+  var Factory_db = window.indexedDB;
   
-  var IDBOpenDBRequest_req = IDBFactory_db.open ("Adatbazis_Tar", 1);
+  var OpenDBRequest = Factory_db.open ("JegyzetTar", 1);
   
-  IDBOpenDBRequest_req.onsuccess = function () {
+  OpenDBRequest.onsuccess = function () {
     var IDBDatabase_db = this.result;
-    var IDBTransaction_trans = IDBDatabase_db.transaction ("Hozzaszolasok", "readwrite");
+    var Transaction = IDBDatabase_db.transaction ("Jegyzetek", "readwrite");
     
-    IDBTransaction_trans.oncomplete = function () {
-      addsor(document.getElementById("txt").value);
+    Transaction.oncomplete = function () {
+      addsor(document.getElementById("note").value);
       IDBDatabase_db.close ();
     };
     
-    var IDBObjectStore_oswt = IDBTransaction_trans.objectStore ("Hozzaszolasok");
+    var ObjectStore = Transaction.objectStore ("Jegyzetek");
     
-    var hozzaszolas = {Szoveg: document.getElementById("notes").value};
+    var note = {Szoveg: document.getElementById("notes").value};
     
-    var IDBRequest_req = IDBObjectStore_oswt.add (hozzaszolas);
-    IDBRequest_req.onsuccess = function () {
-      console.log ("Sikerült a hozzászólás hozzáadása: Hozzászólás szövege: " + hozzaszolas.Szoveg);
+    var Request = ObjectStore.add (note);
+    Request.onsuccess = function () {
+      console.log ("Sikerült a jegyzet hozzáadása: jegyzet szövege: " + note.Szoveg);
     };
     
-    IDBRequest_req.onerror = function () {
-      console.log ("Hiba történt a hozzászólás létrehozásakor!");
+    Request.onerror = function () {
+      console.log ("Hiba történt a jegyzet létrehozásakor!");
     };
     
     
   };
   
-  IDBOpenDBRequest_req.onerror = function () {
+  OpenDBRequest.onerror = function () {
     console.log ("Hiba történt az Adatbázis megnyitásakor!");
   };
 }
 
+function clearData() {
+  var IDBOpenDBRequest = window.indexedDB.deleteDatabase ("JegyzetTar");
+                IDBOpenDBRequest.onsuccess = function () {
+                  console.log ("Sikerült az adatbázis törlése!");    
+                };
+              
+                IDBOpenDBRequest.onerror = function () {
+                  console.log ("Hiba az adatbázis törlésekor!");    
+                };
+              
+                window.location.href = "index.html";
+  
+  
+};
 
-document.getElementById("action").addEventListener("click", addTxt);
+document.getElementById("remove").addEventListener("click", clearData);
+
+document.getElementById("add").addEventListener("click", addNotes);

@@ -26,7 +26,7 @@ section[role="region"] {
 
 div[role="main"] {
     background: #eee;
-    //height: 590px;
+    height: 590px;
     overflow: scroll;
 }
 

@@ -2,7 +2,7 @@
 
 <html>
   <head>
-    <title>Torol</title>
+    <title>Remove</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="style/confirm.css" rel="stylesheet" type="text/css" />
@@ -27,12 +27,12 @@
             }
             
             function bezar() {
-                var IDBOpenDBRequest_req1 = window.indexedDB.deleteDatabase ("Adatbazis_Tar");
-                IDBOpenDBRequest_req1.onsuccess = function () {
+                var IDBOpenDBRequest = window.indexedDB.deleteDatabase ("JegyzetTar");
+                IDBOpenDBRequest.onsuccess = function () {
                   console.log ("Sikerült az adatbázis törlése!");    
                 };
               
-                IDBOpenDBRequest_req1.onerror = function () {
+                IDBOpenDBRequest.onerror = function () {
                   console.log ("Hiba az adatbázis törlésekor!");    
                 };
               
